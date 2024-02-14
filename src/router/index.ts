@@ -13,11 +13,17 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "Home",
     component: Home,
+    meta: {
+      pageTitle: "AiDala | Home",
+    },
   },
   {
     path: "/app",
     name: "App",
     component: App,
+    meta: {
+      pageTitle: "AiDala | App",
+    },
   },
   {
     path: "/dashboard",

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 // import Sticky from 'sticky-js'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination, Navigation, Autoplay, Mousewheel } from 'swiper/modules'
@@ -36,10 +36,27 @@ function scrollOnVerticalSwipe() {
 }
 
 // new Sticky('.home-navigation');
+
+const activeLink = ref('era');
+
+function handleScroll(e) {
+  const scrollPos = e.target.scrollTop;
+  if (scrollPos > 0 && scrollPos < 1000) {
+    activeLink.value = 'era'
+  } else if (scrollPos >= 1000 && scrollPos < 2000) {
+    activeLink.value = 'benefits'
+  } else if (scrollPos >= 2000 && scrollPos < 3400) {
+    activeLink.value = 'capabilities'
+  } else if (scrollPos >= 3400 && scrollPos < 4500) {
+    activeLink.value = 'features'
+  } else {
+    activeLink.value = 'join'
+  }
+}
 </script>
 
 <template>
-  <div class="home">
+  <div class="home" @scroll.passive="handleScroll">
 
     <div class="home-nav-burger-container">
       <div class="home-nav-burger" :class="{ 'home-nav-burger_active': burgerActive }" @click="burgerActive = !burgerActive">
@@ -48,7 +65,6 @@ function scrollOnVerticalSwipe() {
         <span class="home-nav-burger-line-3"></span>
       </div>
     </div>
-
 
     <Transition>
       <ul v-if="burgerActive" class="home-navigation_mobile">
@@ -79,11 +95,11 @@ function scrollOnVerticalSwipe() {
 
     <nav class="home-navigation" data-margin-top="20">
       <ul class="home-navs">
-        <li class="home-nav" @click="scrollTo(refEra)">The AiDala era</li>
-        <li class="home-nav" @click="scrollTo(refBenefits)">Benefits</li>
-        <li class="home-nav" @click="scrollTo(refCapabilities)">Capabilities</li>
-        <li class="home-nav" @click="scrollTo(refFeatures)">Features</li>
-        <li class="home-nav" @click="scrollTo(refJoin)">Join AiDala</li>
+        <li class="home-nav" :class="{ 'home-nav__active': activeLink === 'era' }" @click="scrollTo(refEra)">The AiDala era</li>
+        <li class="home-nav" :class="{ 'home-nav__active': activeLink === 'benefits' }" @click="scrollTo(refBenefits)">Benefits</li>
+        <li class="home-nav" :class="{ 'home-nav__active': activeLink === 'capabilities' }" @click="scrollTo(refCapabilities)">Capabilities</li>
+        <li class="home-nav" :class="{ 'home-nav__active': activeLink === 'features' }" @click="scrollTo(refFeatures)">Features</li>
+        <li class="home-nav" :class="{ 'home-nav__active': activeLink === 'join' }" @click="scrollTo(refJoin)">Join AiDala</li>
       </ul>
     </nav>
 
